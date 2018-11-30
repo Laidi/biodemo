@@ -1,9 +1,9 @@
 '''
 Module      : Main
 Description : The main entry point for the program.
-Copyright   : (c) Ying Zhu, 29 Nov 2018 
+Copyright   : (c) Yi Jin Liew, 29 Nov 2018 
 License     : MIT 
-Maintainer  : ying.zhu@sydney.edu.au 
+Maintainer  : yijin.liew@kaust.edu.sa 
 Portability : POSIX
 
 The program reads one or more input FASTA files. For each file it computes a
@@ -61,6 +61,11 @@ def parse_args():
         default=DEFAULT_MIN_LEN,
         help='Minimum length sequence to include in stats (default {})'.format(
             DEFAULT_MIN_LEN))
+    parser.add_argument(
+        '--maxlen',
+        metavar='N',
+        type=int,
+        help = 'Maximum length sequence to include in stats (default = None)')
     parser.add_argument('--version',
                         action='version',
                         version='%(prog)s ' + PROGRAM_VERSION)
@@ -114,7 +119,7 @@ class FastaStats(object):
                 self.num_seqs, self.num_bases, self.min_len, self.max_len,
                 self.average)
 
-    def from_file(self, fasta_file, minlen_threshold=DEFAULT_MIN_LEN):
+    def from_file(self, fasta_file, minlen_threshold=DEFAULT_MIN_LEN, maxlen_threshold=None):
         '''Compute a FastaStats object from an input FASTA file.
 
         Arguments:
@@ -130,7 +135,7 @@ class FastaStats(object):
         min_len = max_len = None
         for seq in SeqIO.parse(fasta_file, "fasta"):
             this_len = len(seq)
-            if this_len >= minlen_threshold:
+            if this_len >= minlen_threshold and (maxlen_threshold is None or this_len <= maxlen_threshold):
                 if num_seqs == 0:
                     min_len = max_len = this_len
                 else:
@@ -193,11 +198,11 @@ def process_files(options):
                 exit_with_error(str(exception), EXIT_FILE_IO_ERROR)
             else:
                 with fasta_file:
-                    stats = FastaStats().from_file(fasta_file, options.minlen)
+                    stats = FastaStats().from_file(fasta_file, options.minlen, options.maxlen)
                     print(stats.pretty(fasta_filename))
     else:
         logging.info("Processing FASTA file from stdin")
-        stats = FastaStats().from_file(sys.stdin, options.minlen)
+        stats = FastaStats().from_file(sys.stdin, options.minlen, options.maxlen)
         print(stats.pretty("stdin"))
 
 
@@ -227,6 +232,8 @@ def main():
     "Orchestrate the execution of the program"
     options = parse_args()
     init_logging(options.log)
+    print(HEADER)
+    process_files(options)
 
 
 # If this script is run from the command line then call the main function.

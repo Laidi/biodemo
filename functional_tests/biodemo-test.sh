@@ -24,13 +24,13 @@ num_tests=0
 function show_help {
 cat << UsageMessage
 
-${this_program_name}: run integration/regression tests for biodemo 
+${this_program_name}: run integration/regression tests for biodemo1 
 
 Usage:
     ${this_program_name} [-h] [-v] -p program -d test_data_dir 
 
 Example:
-    ${this_program_name} -p bin/biodemo -d data/tests
+    ${this_program_name} -p bin/biodemo1 -d data/tests
 
 -h shows this help message
 
