@@ -1,6 +1,6 @@
-[![codecov](https://codecov.io/github/Laidi/biodemo/branch/master/graphs/badge.svg)](https://codecov.io/github/Laidi/biodemo)
+codecov: [![codecov](https://codecov.io/github/Laidi/biodemo/branch/master/graphs/badge.svg)](https://codecov.io/github/Laidi/biodemo)
 
-[![travis](https://travis-ci.org/Laidi/biodemo.svg?branch=master)](https://travis-ci.org/Laidi/biodemo)
+travis: [![travis](https://travis-ci.org/Laidi/biodemo.svg?branch=master)](https://travis-ci.org/Laidi/biodemo)
 
 # Overview 
   
